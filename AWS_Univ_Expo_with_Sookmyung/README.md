@@ -1,4 +1,6 @@
-#[커리어박람회]AWS Univ. Expo with Sookmyung
+# [커리어박람회]AWS Univ. Expo with Sookmyung
+
+![AWS](./aws.jpg "AWS")
 
 https://onoffmix.com/event/176765?utm_source=newsletter&utm_medium=cpc&utm_campaign=rising5&utm_content=rising5_190423
 

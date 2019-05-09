@@ -15,6 +15,6 @@
 
 - // ![사진 이름](사진 경로)  
   
-- //![테스트 사진](./test_photo.jpg)  
+- // ![test_name](./test_photo.jpg)  
   
 - ![테스트 사진](./test_photo.jpg)  

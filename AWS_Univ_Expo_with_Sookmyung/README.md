@@ -20,4 +20,4 @@ https://onoffmix.com/event/176765?utm_source=newsletter&utm_medium=cpc&utm_campa
   
 - 오전은 AWS Essential 강의 위주로 진행됨.
 - PPT 자료책을 주어 AWS 주요 기능들의 동작 원리를 설명해주고 예제를 시연해 줌
-- 핸즈온 부스에서는 AWS를 이용하여 워드프레스 연동하기를 가르쳐주며 실습함
+- 핸즈온 부스에서는 AWS를 이용하여 워드프레스 연동하기를 시연 및 실습함

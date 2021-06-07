@@ -7,9 +7,9 @@
 
 # 링크
   
-- //[한지호의 깃허브] (https://github.com/BoxBunny) 
+- //[한지호의 깃허브] (https://github.com/han-jojo) 
   
-- [한지호의 깃허브](https://github.com/BoxBunny)
+- [한지호의 깃허브](https://github.com/han-jojo)
   
 # 사진
 

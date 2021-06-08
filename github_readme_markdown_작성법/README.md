@@ -1,9 +1,9 @@
 # 깃허브 readme 마크다운 문서 작성법 메모장
 
 
-# 한 줄 띄기
+# 줄 바꿈
   
-- 스페이스 바 두번
+- 문장 끝에서 스페이스 바 3번
 
 # 링크
   
@@ -31,8 +31,8 @@ for x in fruits:
 ```
 
 
-//``` Python  
-fruits = ["apple", "banana", "cherry"]  
-for x in fruits:  
-  print(x)  
-//```  
+//``` Python   
+fruits = ["apple", "banana", "cherry"]   
+for x in fruits:   
+  print(x)   
+//```   

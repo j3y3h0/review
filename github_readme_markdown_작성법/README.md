@@ -22,7 +22,7 @@
 - [x] Check on
 - [ ] Check off
 
-# 코드 주석
+# 코드 블록
 
 ``` Python
 fruits = ["apple", "banana", "cherry"]

@@ -21,3 +21,19 @@
 
 - [x] Check on
 - [ ] Check off
+
+# 코드 주석
+
+``` Python
+fruits = ["apple", "banana", "cherry"]
+for x in fruits:
+  print(x)
+```
+
+/*
+``` Python
+fruits = ["apple", "banana", "cherry"]
+for x in fruits:
+  print(x)
+```
+*/

@@ -30,10 +30,9 @@ for x in fruits:
   print(x)
 ```
 
-/*
-``` Python
+
+//``` Python
 fruits = ["apple", "banana", "cherry"]
 for x in fruits:
   print(x)
-```
-*/
+//```

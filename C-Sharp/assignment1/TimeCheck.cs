@@ -1,65 +1,78 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace WindowsFormsApp2
 {
     public partial class Form1 : Form
     {
+        private readonly char[] arr1 = "1234567890".ToCharArray();
+        private readonly char[] arr2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+        private readonly char[] arr3 = "가나다라마바사아자차카타파하".ToCharArray();
+
+        private Queue<Task> queue = new Queue<Task>();
+        private bool isProcess = false;
+
         public Form1()
         {
             InitializeComponent();
-            CheckForIllegalCrossThreadCalls = false;
         }
 
-        /*
-        Form 실행시 label1, label2의 시간을 출력해준다.
-        Task.Run을 실행한다
-        label1은 현재시간의 매 초가 25초가 될 때마다 refresh 해준다.
-        label2는 실시간 시간을 1초마다 refresh 해준다.
-        */
-
-        private void Form1_Load(object sender, EventArgs e)
+        private void ExecTask()
         {
-            label1.Text = DateTime.Now.ToString("tt hh:mm:25");
-            label2.Text = DateTime.Now.ToLongTimeString();
-            Task.Run(() =>
-            {
-                for (int i = 0; i < 60; i++)
+            Task.Run(async () => {
+                while (!isProcess && queue.Count > 0)
                 {
-                    textBox1.AppendText("tick " + i.ToString() + ", ");
-                    Delay(1000);
-                    label2.Text = DateTime.Now.ToLongTimeString();
-                    if (DateTime.Now.ToString("ss") == "25")
-                        label1.Text = DateTime.Now.ToLongTimeString();
+                    isProcess = true;
+                    Task task = queue.Dequeue();
+                    task.Start();
+                    task.Wait();
+                    isProcess = false;
                 }
+                await Task.Delay(3000);
             });
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void PrintText(char[] arr)
         {
-            
+            for (int i = 0; i < arr.Length; i++)
+            {
+                this.Invoke(new Action(() => { textBox1.Text += $"{arr[i]} "; }));
+                Thread.Sleep(50);
+            }
+            this.Invoke(new Action(() => { textBox1.Text += Environment.NewLine; }));
         }
 
-        private static DateTime Delay(int MS)
+        private void button1_Click(object sender, EventArgs e) //숫자 출력 0~10
         {
-            // Thread 와 Timer보다 효율적으로 사용
-            DateTime ThisMoment = DateTime.Now;
-            TimeSpan duration = new TimeSpan(0, 0, 0, 0, MS);
-            DateTime AfterWards = ThisMoment.Add(duration);
+            Task task = new Task(() => PrintText(arr1));
+            queue.Enqueue(task);
+            ExecTask();
+            textBox2.Text += "숫자 Task Add" + Environment.NewLine;
+        }
 
-            while (AfterWards >= ThisMoment)
-            {
-                System.Windows.Forms.Application.DoEvents();
-                ThisMoment = DateTime.Now;
-            }
-            return DateTime.Now;
+        private void button2_Click(object sender, EventArgs e) //알파벳 출력 0~26
+        {
+            Task task = new Task(() => PrintText(arr2));
+            queue.Enqueue(task);
+            ExecTask();
+            textBox2.Text += "영어 Task Add" + Environment.NewLine;
+        }
+
+        private void button3_Click(object sender, EventArgs e) //한글 출력 0~14
+        {
+            Task task = new Task(() => PrintText(arr3));
+            queue.Enqueue(task);
+            ExecTask();
+            textBox2.Text += "한글 Task Add" + Environment.NewLine;
         }
     }
 }

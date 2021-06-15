@@ -16,6 +16,8 @@
 
 - git config --global core.editor "vim" : 커밋 편집에디터를 vim으로 변경하기
 
+- git add . : 현재 폴더 내의 모든 변경사항을 stage에 추가  
+
 - git commit -m "메세지 내용" : 메세지와 함께 커밋하기
 
 - git commit -am "메세지 내용" : 스테이징과 커밋을 메세지와 함께 올리기

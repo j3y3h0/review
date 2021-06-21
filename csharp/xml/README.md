@@ -21,9 +21,9 @@ namespace TableXmlMaker
             string url = label1.Text.ToString();
             xmlFile.Load(url);
             XmlNodeList tables = xmlFile.SelectNodes("./Tables/Table");
-            XmlReader reader = XmlReader.Create(url);
-
-            if(isChecked)
+            XmlElement element = xmlFile.DocumentElement;
+            
+            if (isChecked)
             {
                 foreach (XmlNode table in tables)
                 {
@@ -32,8 +32,11 @@ namespace TableXmlMaker
                         XmlNodeList columns = table.SelectNodes("./Columns/Column");
                         foreach (XmlNode column in columns)
                         {
-                            if(column.Attributes.Count>=2)
+                            var hasAttribute = column.Attributes["PrimaryKey"];
+                            if (hasAttribute != null)
+                            {
                                 listBox2.Items.Add(column.Attributes["Name"].Value + " (Primary Key)" + Environment.NewLine);
+                            }
                         }
                         break;
                     }
@@ -116,13 +119,14 @@ namespace TableXmlMaker
         }
     }
 }
-
 ```
 
 # Form2
 
 ``` csharp
 using System;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -131,6 +135,7 @@ namespace TableXmlMaker
     public partial class Form2 : Form
     {
         XmlDocument xmlFile = new XmlDocument();
+        XmlReader reader;
         string url = "";
 
         public Form2()
@@ -151,6 +156,7 @@ namespace TableXmlMaker
                 label1.Text = "";
 
             url = label1.Text.ToString();
+            reader = XmlReader.Create(url);
             treeView1.Nodes.Clear();
 
             try
@@ -163,7 +169,7 @@ namespace TableXmlMaker
                 TreeNode tNode = new TreeNode();
                 tNode = treeView1.Nodes[0];
 
-                AddNode(xmlFile.DocumentElement, tNode);
+                AddTreeNode(xmlFile.DocumentElement, tNode);
             }
             catch (XmlException ex)
             {
@@ -175,24 +181,23 @@ namespace TableXmlMaker
             }
         }
 
-        private void AddNode(XmlNode inXmlNode, TreeNode inTreeNode)
+        private void AddTreeNode(XmlNode inXmlNode, TreeNode inTreeNode)
         {
             XmlNode xNode;
             TreeNode tNode;
             XmlNodeList nodeList;
-            int i;
 
             xmlFile.Load(url);
 
             if (inXmlNode.HasChildNodes)
             {
                 nodeList = inXmlNode.ChildNodes;
-                for(i=0; i<nodeList.Count; i++)
+                for(int i=0; i<nodeList.Count; i++)
                 {
                     xNode = inXmlNode.ChildNodes[i];
                     inTreeNode.Nodes.Add(new TreeNode(xNode.Name));
                     tNode = inTreeNode.Nodes[i];
-                    AddNode(xNode, tNode);
+                    AddTreeNode(xNode, tNode);
                 }
             }
             else
@@ -201,19 +206,42 @@ namespace TableXmlMaker
             }
         }
 
+        private void PrintTreeNode(TreeNode inputNode)
+        {
+            foreach(TreeNode childNode in inputNode.Nodes)
+            {
+                textBox1.Text += childNode.Text + Environment.NewLine;
+                PrintTreeNode(childNode);
+            }
+        }
+
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             textBox1.Clear();
             TreeNode selectedNod = treeView1.SelectedNode;
-            TreeNode tNode;
-            XmlNode inXmlNode = xmlFile.DocumentElement;
-            XmlNode xNode;
-            XmlNodeList nodeList;
-            int i;
+            PrintTreeNode(selectedNod);
+        }
 
-            textBox1.Text += selectedNod.Text + Environment.NewLine;
+        private void 저장ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text == "")
+            {
+                MessageBox.Show("값이 존재하지 않습니다");
+                return;
+            }
+            StreamWriter saveFile;
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.SelectedPath = label1.Text;
+            DialogResult result = dialog.ShowDialog();
+            string uri = "";
+
+            if (result == DialogResult.OK)
+                uri = dialog.SelectedPath;
+
+            saveFile = File.CreateText(uri+"\\node.txt");
+            saveFile.Write(textBox1.Text);
+            saveFile.Close();
         }
     }
 }
-
 ```

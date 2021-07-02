@@ -51,3 +51,5 @@
 - git reset --hard HEAD : 작업 디렉토리에 모든 변경 버리기
 
 - git revert <commit> : 커밋 되돌아가기
+
+  ![Git Flow](./git-flow.png)

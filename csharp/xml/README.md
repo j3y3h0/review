@@ -1,4 +1,8 @@
 ## Form1
+
+![image](https://user-images.githubusercontent.com/18677603/124420455-71454800-dd9a-11eb-8ba0-421607586b87.png)
+
+
 ```csharp
 using System;
 using System.Windows.Forms;
@@ -21,7 +25,6 @@ namespace TableXmlMaker
             string url = label1.Text.ToString();
             xmlFile.Load(url);
             XmlNodeList tables = xmlFile.SelectNodes("./Tables/Table");
-            XmlElement element = xmlFile.DocumentElement;
             
             if (isChecked)
             {
@@ -123,6 +126,9 @@ namespace TableXmlMaker
 
 # Form2
 
+![image](https://user-images.githubusercontent.com/18677603/124424879-b5d4e180-dda2-11eb-912a-a74614611c2c.png)
+
+
 ``` csharp
 using System;
 using System.IO;
@@ -137,6 +143,11 @@ namespace TableXmlMaker
         XmlDocument xmlFile = new XmlDocument();
         XmlReader reader;
         string url = "";
+        OpenFileDialog openDialog = new OpenFileDialog();
+        FolderBrowserDialog saveDialog = new FolderBrowserDialog();
+        StreamWriter saveFile;
+        
+
 
         public Form2()
         {
@@ -145,13 +156,12 @@ namespace TableXmlMaker
 
         private void button1_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.FileName = "";
-            dialog.DefaultExt = "";
-            dialog.Filter = "XML 파일|*.xml";
-            DialogResult result = dialog.ShowDialog();
+            openDialog.FileName = "";
+            openDialog.DefaultExt = "";
+            openDialog.Filter = "XML 파일|*.xml";
+            DialogResult result = openDialog.ShowDialog();
             if (result == DialogResult.OK)
-                label1.Text = dialog.FileName;
+                label1.Text = openDialog.FileName;
             else
                 label1.Text = "";
 
@@ -165,7 +175,7 @@ namespace TableXmlMaker
                 XmlElement root = xmlFile.DocumentElement;
                 XmlNodeList tables = root.ChildNodes;
 
-                treeView1.Nodes.Add(new TreeNode(xmlFile.DocumentElement.Name));
+                treeView1.Nodes.Add(new TreeNode("<" + xmlFile.DocumentElement.Name + " />"));
                 TreeNode tNode = new TreeNode();
                 tNode = treeView1.Nodes[0];
 
@@ -183,9 +193,10 @@ namespace TableXmlMaker
 
         private void AddTreeNode(XmlNode inXmlNode, TreeNode inTreeNode)
         {
-            XmlNode xNode;
             TreeNode tNode;
+            XmlNode xNode;
             XmlNodeList nodeList;
+            XmlAttribute hasAttribute;
 
             xmlFile.Load(url);
 
@@ -195,7 +206,15 @@ namespace TableXmlMaker
                 for(int i=0; i<nodeList.Count; i++)
                 {
                     xNode = inXmlNode.ChildNodes[i];
-                    inTreeNode.Nodes.Add(new TreeNode(xNode.Name));
+                    hasAttribute = xNode.Attributes["Name"];
+                    if(hasAttribute == null)
+                    {
+                        inTreeNode.Nodes.Add(new TreeNode("<" + xNode.Name + " />"));
+                    }
+                    else
+                    {
+                        inTreeNode.Nodes.Add(new TreeNode("<" + xNode.Attributes["Name"].Value + ">"));
+                    }
                     tNode = inTreeNode.Nodes[i];
                     AddTreeNode(xNode, tNode);
                 }
@@ -222,23 +241,20 @@ namespace TableXmlMaker
             PrintTreeNode(selectedNod);
         }
 
-        private void 저장ToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (textBox1.Text == "")
             {
                 MessageBox.Show("값이 존재하지 않습니다");
                 return;
             }
-            StreamWriter saveFile;
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
-            dialog.SelectedPath = label1.Text;
-            DialogResult result = dialog.ShowDialog();
-            string uri = "";
+            DialogResult result = saveDialog.ShowDialog();
+            string uri = string.Empty;
 
             if (result == DialogResult.OK)
-                uri = dialog.SelectedPath;
+                uri = saveDialog.SelectedPath;
 
-            saveFile = File.CreateText(uri+"\\node.txt");
+            saveFile = File.CreateText(uri + "\\node.txt");
             saveFile.Write(textBox1.Text);
             saveFile.Close();
         }

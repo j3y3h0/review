@@ -18,6 +18,10 @@
 
 - Ctrl + Space : 자동완성
 
+- Ctrl + M + M : 모두 접기
+
+- Ctrl + M + P : 모두 펼치기
+
 - Ctrl + K + F : 자동 정렬하기
 
 - Ctrl + X / V : 현재 라인 잘라내기 / 붙여넣기

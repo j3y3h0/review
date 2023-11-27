@@ -36,6 +36,14 @@ sudo nginx -t
 sudo nginx -s reload
 sudo systemctl status nginx
 
+# 전체 메모리 사용량 조회
+free -m
+# 시스템에서 가장 많은 자원을 사용하는 프로세스 조회
+top
+
+# 시스템의 전반적인 메모리 사용량, 프로세스, 페이징 등의 통계 조회
+vmstat
+
 # Docker 관련 명령어
 docker stop CONTAINER_ID # 중단
 docker start CONTAINER_ID # 실행

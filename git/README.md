@@ -1,10 +1,14 @@
 # Git 명령어 모음
 
+- git --version : 설치 확인
+
 - git init
 
 - git remote add origin 원격저장소주소 : 원격 저장소에 연결
 
 - git remote -v : 원격 저장소에 잘 연결되었는지 확인
+
+- git remote show [remote-name] : 레포지토리 정보 조회
 
 - git clone URL
 
@@ -16,7 +20,7 @@
 
 - git config --global core.editor "vim" : 커밋 편집에디터를 vim으로 변경하기
 
-- git add . : 현재 폴더 내의 모든 변경사항을 stage에 추가  
+- git add . : 현재 폴더 내의 모든 변경사항을 stage에 추가
 
 - git commit -m "메세지 내용" : 메세지와 함께 커밋하기
 
@@ -44,9 +48,8 @@
 
 - git clone 원격저장소주소 지역저장소디렉토리 : 원격저장소 가져오기
 
-- git pull origin master : 원격 저장소의 내용을 지역 저장소의 
-마스터브랜치로 가져오기
-- git fetch : 원격 저장소의 브랜치 변화 정보만 가져오기
+- git pull origin master : 원격 저장소의 내용을 지역 저장소의 마스터브랜치로 가져오기
+- git fetch origin : 원격 저장소의 브랜치 변화 정보만 가져오기
 
 - git reset --hard HEAD : 작업 디렉토리에 모든 변경 버리기
 
